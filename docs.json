@@ -76,8 +76,8 @@
     "links": [],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Go to Appjet",
+      "href": "https://app.appjet.ai"
     }
   },
   "contextual": {
