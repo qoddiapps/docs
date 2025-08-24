@@ -1,5 +1,5 @@
 {
-  "$schema": "./docs.json",
+  "$schema": "docs.json",
   "theme": "willow",
   "name": "AppJet Documentation",
   "colors": {
