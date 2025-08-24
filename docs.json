@@ -89,8 +89,8 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/appjet_white.png",
+    "dark": "/appjet_white.png"
   },
   "navbar": {
     "links": [
