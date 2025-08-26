@@ -24,9 +24,8 @@
             "group": "Code with AppJet",
             "pages": [
 
-              "essentials/github",
-              "essentials/new",
               "essentials/codebase",
+              "essentials/new",
               "essentials/messages",
               "essentials/free-messages",
               "essentials/privacy"
