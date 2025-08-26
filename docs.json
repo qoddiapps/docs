@@ -23,11 +23,12 @@
           {
             "group": "Code with AppJet",
             "pages": [
-             "essentials/privacy",
+
               "essentials/github",
               "essentials/codebase",
               "essentials/messages",
-              "essentials/free-messages"
+              "essentials/free-messages",
+              "essentials/privacy"
             ]
           },
           {
