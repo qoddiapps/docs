@@ -1,74 +1,51 @@
 ---
-title: 'Privcay'
-description: 'Code Privacy and Intellectual property'
-icon: 'code'
+title: "Privacy"
+description: "Code Privacy and Intellectual property"
+icon: "code"
 ---
 
+<Note>
+Note: When you open a repository with AppJet, a branch appjet is automatically created on GitHub based on your main branch. AppJet will only have access to this branch and will never make any modification to any other branch including the main branch.
+
+
+If you ask the agent to make a modification on the main branch, or any other branch, the modification will always be made on the appjet branch exclusively.
+</Note>
+  
 Privacy built in the core of AppJet to be sure your code remains your intellecutal property. Your code is stored securely on GitHub and AppJet does not retain any copy of your code locally on his server.
 We retain an history of messages exchanged with the agent for quality and security purposes but, except for the free plan, we don't use any of those messages for training the agent or improving the product.
 
-
-
 <Warning>
-Messages exchanged with the Agent, included code read and produced, is anonymized and used for training purposes on the Free plan. \
+  Messages exchanged with the Agent, included code read and produced, is anonymized and used for training purposes on the Free plan. \\
 </Warning>
 
 ## Data we retain
 
 To provide you with the AppJet service we collect and retain several personal informations including:
 
-  - GitHub username and main email address,
-  - GitHub connection tokens and installation keys,
-  - IP Addresses used to connect with AppJet,
-  - Supabase connection tokens and Anon key you are sharing with AppJet
+- GitHub username and main email address,
+- GitHub connection tokens and installation keys,
+- IP Addresses used to connect with AppJet,
+- Supabase connection tokens and Anon key you are sharing with AppJet
 
 ## What we do not retain
 
 We never store, retain or collect:
 
-  - Snippets or files part of your code, except in an anonymized form when using the Free tier,
-  - List of public and private repositories that are not accessed using AppJet even if they are located in the same GitHub account,
-  - GitHub access and connection tokens for other apps, services or at account-level,
-  - Supabase account-level connection keys or tokens.
+- Snippets or files part of your code, except in an anonymized form when using the Free tier,
+- List of public and private repositories that are not accessed using AppJet even if they are located in the same GitHub account,
+- GitHub access and connection tokens for other apps, services or at account-level,
+- Supabase account-level connection keys or tokens.
 
 ## Third parties data processor
 
 We use several data processor, as part of your experience using AppJet to process some part of your information. AppJet does not retain any information that you use with those provider to access the service:
 
-  - Stripe (https://stripe.com) for Payment processing data,
-  - Qoddi App Platform (https://qoddi.com), for builds and production-version of your code base,
-  - Sparkpost (https://sparkpost.com) for transactionnal emails and notifications,
+- Stripe (https://stripe.com) for Payment processing data,
+- Qoddi App Platform (https://qoddi.com), for builds and production-version of your code base,
+- Sparkpost (https://sparkpost.com) for transactionnal emails and notifications,
 
 ## Account deletion request
 
-You can request to be excluded from the service at any time by contact our support team inside the app or by email at support@appjet.ai
+You can request to be excluded from the service at any time by contact our support team inside the app or by email at [support@appjet.ai](mailto:support@appjet.ai)
 
 Since AppJet does not have it's own authentification service (managed by Github), the request for deletion will prevent your account to login again at any point using GitHub. If you change your mind later and want to use AppJet again you will need to ask to be whitelisted again.
-
-
-
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
-
-## Code blocks
-
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
-
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
