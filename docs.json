@@ -59,8 +59,8 @@
     }
   },
   "logo": {
-    "light": "/appjet_white.png",
-    "dark": "/appjet_logo.png"
+    "light": "/appjet_logo.png",
+    "dark": "/appjet_white.png"
   },
   "navbar": {
     "links": [],
