@@ -25,6 +25,7 @@
             "pages": [
 
               "essentials/codebase",
+              "essentials/github",
               "essentials/new",
               "essentials/messages",
               "essentials/free-messages",
