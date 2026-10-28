@@ -10,6 +10,10 @@
 #
 # Section 1 asserts the Dockerfile keeps a start command that actually works.
 # Section 2 boots the real server and asserts it serves the documentation.
+#
+# NOTE: assertions capture command output into files/variables before matching.
+# Never end a pipeline with `grep -q` here: it exits on the first match, the
+# producer dies from SIGPIPE, and `set -o pipefail` would report a false result.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -50,8 +54,10 @@ else
 fi
 
 grep -qE '^[[:space:]]*EXPOSE[[:space:]]+3000' Dockerfile \
+  && ok "EXPOSE 3000 present" \
   || fail "Dockerfile must EXPOSE 3000 (matches the deployment port)"
 grep -qE '^[[:space:]]*ENV[[:space:]]+PORT=3000' Dockerfile \
+  && ok "ENV PORT=3000 present" \
   || fail "Dockerfile must set ENV PORT=3000"
 
 # A pinned CLI keeps an upstream `@latest` release from breaking the build again.
@@ -68,45 +74,52 @@ echo
 echo "== HTTP smoke test (real server on port 3000) =="
 
 LOG="$(mktemp -t docs-smoke.XXXXXX.log)"
+BODY="$(mktemp -t docs-body.XXXXXX.html)"
+CLEAN_LOG="$(mktemp -t docs-log.XXXXXX.txt)"
+
 setsid npx --yes @mintlify/cli dev --host --no-open >"$LOG" 2>&1 &
 SRV_PID=$!
 cleanup() {
   kill -TERM -- "-$SRV_PID" 2>/dev/null
   sleep 2
   kill -KILL -- "-$SRV_PID" 2>/dev/null
-  rm -f "$LOG"
+  rm -f "$LOG" "$BODY" "$CLEAN_LOG"
 }
 trap cleanup EXIT
+
+fetch() { # fetch <path> -> prints HTTP status, body written to $BODY
+  curl -s -o "$BODY" -w '%{http_code}' --max-time 45 "http://127.0.0.1:3000$1"
+}
 
 # Mintlify always serves on 3000 (the CLI ignores PORT), so wait for that port.
 ready=0
 for _ in $(seq 1 60); do
   sleep 3
-  if curl -s -o /dev/null --max-time 5 http://127.0.0.1:3000/ 2>/dev/null; then
+  if [[ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://127.0.0.1:3000/)" =~ ^[23] ]]; then
     ready=1
     break
   fi
   if ! kill -0 "$SRV_PID" 2>/dev/null; then
     echo "--- server log ---"
-    sed -e 's/\x1b\[[0-9;]*[A-Za-z]//g' "$LOG" | grep -v '^[[:space:]]*$' | tail -20
+    sed -e 's/\x1b\[[0-9;]*[A-Za-z]//g' "$LOG" | tail -20
     fail "the mintlify server exited before serving any request"
     break
   fi
 done
 
 if [[ "$ready" -eq 1 ]]; then
-  ok "server accepted a connection on 127.0.0.1:3000"
+  ok "server answered on 127.0.0.1:3000"
 
   # Bound to all interfaces? Required for the platform proxy to reach it.
-  if ss -ltn 2>/dev/null | grep -E ':3000[[:space:]]' | grep -qE '\*:3000|0\.0\.0\.0:3000'; then
+  ss -ltn >"$CLEAN_LOG" 2>/dev/null
+  if grep -E ':3000[[:space:]]' "$CLEAN_LOG" | grep -E '\*:3000|0\.0\.0\.0:3000' >/dev/null; then
     ok "port 3000 is bound on all interfaces"
   else
     fail "port 3000 is not bound on 0.0.0.0 (proxy traffic cannot reach it)"
   fi
 
-  BODY="$(mktemp -t docs-body.XXXXXX)"
   for path in / /quickstart /essentials/deploy /essentials/troubleshoot; do
-    code="$(curl -s -o "$BODY" -w '%{http_code}' --max-time 40 "http://127.0.0.1:3000$path")"
+    code="$(fetch "$path")"
     if [[ "$code" == "200" ]]; then
       ok "$path -> 200 ($(wc -c <"$BODY") bytes)"
     else
@@ -115,24 +128,26 @@ if [[ "$ready" -eq 1 ]]; then
   done
 
   # The home page must render the docs shell, not an empty/error body.
-  if curl -s --max-time 40 http://127.0.0.1:3000/ | grep -qi 'AppJet'; then
+  code="$(fetch /)"
+  if grep -qi 'AppJet' "$BODY"; then
     ok "home page renders AppJet content"
   else
-    fail "home page does not contain the expected 'AppJet' content"
+    fail "home page does not contain the expected 'AppJet' content (HTTP $code)"
   fi
 
-  # A nested page must render its own title, proving routing works.
-  if curl -s --max-time 40 http://127.0.0.1:3000/quickstart | grep -qi 'Quickstart'; then
+  # A nested page must render its own title/heading, proving routing works.
+  code="$(fetch /quickstart)"
+  if grep -qiE '<title>Quickstart[^<]*</title>|<h1[^>]*>[[:space:]]*Quickstart' "$BODY"; then
     ok "nested page /quickstart renders its own content"
   else
-    fail "nested page /quickstart did not render expected content"
+    fail "nested page /quickstart did not render expected content (HTTP $code)"
   fi
 
-  rm -f "$BODY"
-
   # The crash loop that preceded the outage must not be happening.
-  if sed -e 's/\x1b\[[0-9;]*[A-Za-z]//g' "$LOG" | grep -qE 'Unknown command|Cannot read properties of undefined'; then
-    fail "server log contains a fatal CLI error (crash loop)"
+  sed -e 's/\x1b\[[0-9;]*[A-Za-z]//g' "$LOG" >"$CLEAN_LOG"
+  if grep -E 'Unknown command|Cannot read properties of undefined|digest:' "$CLEAN_LOG" >/dev/null; then
+    fail "server log contains a fatal CLI error (crash loop):"
+    grep -E 'Unknown command|Cannot read properties of undefined' "$CLEAN_LOG" | head -5
   else
     ok "no fatal CLI errors in the server log"
   fi
