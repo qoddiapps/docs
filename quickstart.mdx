@@ -1,80 +1,51 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Start coding with AppJet in minutes"
 ---
 
 ## Get started in three steps
 
-Get your documentation site running locally and make your first customization.
+Discover how AppJet can help you build code and fix bugs automatically.
 
-### Step 1: Set up your local environment
+### Step 1: Login with GitHub and Open a Repository
 
 <AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
+  <Accordion icon="github" title="Start with any repo">
+    On the repository list, select an existing repository or create a new one by clicking on the + sign.
+
+    No matter what repository you choose, existing or new, AppJet will immediately create a new branch appjet in GitHub.
+  <Tip>If you used an existing repository, the main branch is automatically cloned when you open the repository for the first time. Note that happens only when you open the repository the first time.</Tip>
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
+  <Accordion icon="rectangle-terminal" title="Check your code on the File Explorer">
+  The File Explorer integrated with AppJet allows to view and edit any file in your repository. You can edit any file manually if needed.
   </Accordion>
 </AccordionGroup>
 
 ### Step 2: Deploy your changes
 
 <AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
+  <Accordion icon="brain" title="Ask the agent anything">
+    AppJet can analyze and explain your complete codebase in few seconds thanks to it's extended context and agentic searching capabilities. You can interact in natural language with the agent.
+    Start by a simple task: on a new repository, ask the agent to create an Hello World page.
 </Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+<Accordion icon="panel-top" title="Deploy your code">
+    You can ask the agent to deploy the app by saying "build the app" or clicking on the "Deploy Code" button.
+    Visit the Settings > Overview tab or the Preview tab to see your deployed code immediately.
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
+    <Tip>Deploying the code is NOT mandatory, your code is updated on GitHub and can be consumed from there, merged via PR or deployed via GitHub automation.</Tip>
   </Accordion>
 </AccordionGroup>
 
-### Step 3: Go live
+### Step 3: Configure your app further
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+The settings tab includes everything you need to manage your app further:
 
-## Next steps
-
-Now that you have your docs running, explore these key features:
-
-<CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
+  - Use the Network tab to set the exposed port (if needed) or activate the WebSocket support.
+  - Disk and Env Var tabs allows you to setup a local disk storage for your app and set environment variables to store secrets securely outside of your app container.
+  - Supabase allows you to connect directly with your Supabase account, then ask the agent to add user authentification, S3-compatible storage, a PostGres database or Edge functions (visit supabase.co for more infos)
+  - The Log tab display the running logs of the app, useful to locate bugs or errors, feel free to copy/paste part of the logs to the agent if needed,
+  - History collects the modifications made on your code by the agent, along with the commit ID. The history is linked to the deployed builds so several builds can have the same commit depending on the last change between the builds.
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  The agent has access to all functions and can help you set virtual drives, environment variables, Supabase functions etc... Feel free to ask the agent anything about your app and how to make it better!
 </Note>

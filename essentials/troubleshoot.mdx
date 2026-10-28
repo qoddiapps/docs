@@ -1,0 +1,30 @@
+---
+title: 'Troubleshoot'
+description: 'Understand common errors, use the Agent to fix bugs'
+icon: 'gear'
+---
+
+
+### App running Issues
+
+The most common error when deploying an app is the `error 502`.
+
+This mean your app encountered and issue or the proxy cannot properly route the traffic to your app.
+
+There is several steps you can try to fix this issue:
+
+- Check your app logs under the Settings>Logs tab.
+- Check if the Exposed Port in settings is the same as the EXPOSE port inside the Dockerfile. The agent takes care of that during the deployment but some discrepancies can happen.
+- Ask the agent to help you: it will analyze your code and deployment and check for errors. You can also copy/paste some parts of the app logs to help it locate the issue.
+- Redeploy your app: sometimes deploying the app again fixes the issue if something wrong happened during the deployment of your app.
+
+
+### Build Issues
+
+The agent gets the build logs during the build processes and will help you fix automatically any build errors. It will automatically edit the files and redeploy the app again.
+
+### Agent's behavior
+
+You can stop the thinking process of the agent at any time by clicking on the stop button inside the chat window.
+
+If you think the agent is not behaving properly you can ask it to correct it's thinking. Please contact us if you have any issue with the agent's behavior.
